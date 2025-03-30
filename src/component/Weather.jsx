@@ -1,16 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Weather.css';
-import searchicon from '../assets/search.png';
+import searchicon from '../assets/search.png';  //importing image from assets folder
 import windicon from '../assets/wind.png';
 import humidityicon from '../assets/humidity.png';
-import loader from '../assets/spinner.gif'; 
+import loader from '../assets/spinner.gif'; //importing spinner from assets folder
+
 
 const Weather=()=>{
-    const inputRef=useRef();
-    const [weatherData,setWeatherData]=useState(false);
-    const [loading,setLoading]=useState(false); 
+    const inputRef=useRef(); //store reference of the variable
+    const [weatherData,setWeatherData]=useState(false); //variable weatherData with an initial value of false
+    const [loading,setLoading]=useState(false); //variable loading with an initial value of false
 
-    const allIcon = {
+    const allIcon = { //all set of icons with there specific image
         "01d": "https://openweathermap.org/img/wn/01d@2x.png",
         "01n": "https://openweathermap.org/img/wn/01n@2x.png",
         "02d": "https://openweathermap.org/img/wn/02d@2x.png",
@@ -28,61 +29,64 @@ const Weather=()=>{
     };
 
     const search=async (city)=>{
-        if (city===""){
-            alert("Enter City Name");
-            setLoading(false); 
-            return;
+        if (city===""){ //if user doesnt input any city
+            alert("Enter City Name"); //alert will be provided
+            setLoading(false); //update the loader to false
+            return; 
         }
 
-        setLoading(true);
+        setLoading(true); ////update the loader to false
 
         try {
-            const api="f16cda736235b464fd8cb80ddd17dd7c";
+            const api="f16cda736235b464fd8cb80ddd17dd7c"; //api
             const url=`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${api}`; 
-            const response=await fetch(url);
-            const data=await response.json();
+            const response=await fetch(url); //fetching the api data
+            const data=await response.json(); //coverting the data in json form
+    
+            
 
-            if(!response.ok){
-                setTimeout(()=>{
+            if(!response.ok){ //if response is false it will provide a error alert
+                setTimeout(()=>{ //wait for a specific time before execution 
                     alert(data.message);
-                    setLoading(false);
-                },2000)
+                    setLoading(false); 
+                },2000) // 2second
                 return;
             }
-            const icon=allIcon[data.weather[0].icon] || "https://openweathermap.org/img/wn/01d@2x.png";
+            const icon=allIcon[data.weather[0].icon] || "https://openweathermap.org/img/wn/01d@2x.png"; //get a specific icon out of the list and if no is present give a default
+        
             
             setTimeout(()=>{ 
-                setWeatherData({
-                    humidity: data.main.humidity,
-                    windSpeed: data.wind.speed,
-                    temperature: Math.floor(data.main.temp),
-                    location: data.name,
+                setWeatherData({ //update the weather data
+                    humidity: data.main.humidity, //storing humidity
+                    windSpeed: data.wind.speed, //storing speed
+                    temperature: Math.floor(data.main.temp), //storing temperature only integer value
+                    location: data.name, //location name
                     icon: icon 
                 });
                 setLoading(false);
-            },3000);
+            },3000); //3 second
 
-        } catch(error){
+        } catch(error){ //if error occurs
             console.error("Error fetching weather data:",error);
-            setLoading(false);
-            setWeatherData(false);
+            setLoading(false); //update the loader
+            setWeatherData(false); //update weather data to false
         }
     };
 
-    useEffect(()=>{
-        search("Delhi");
+    useEffect(()=>{ // Code to run when the component mounts or updates
+        search("Delhi"); 
     },[]);
 
-    return (
+    return ( //complete weather module input and data
         <div className="weather">
             <div className="searchbar">
-                <input type="text" ref={inputRef} placeholder="Enter Location" />
+                <input type="text" id='input' ref={inputRef} placeholder="Enter Location" />
                 <img src={searchicon} alt="Error" onClick={()=>search(inputRef.current.value)}></img>
             </div>
 
-            {loading?( 
+            {loading?( //if loading is true display the image
                 <img src={loader} alt="Loading" className="spinner"></img>
-            ):weatherData?(
+            ):weatherData?( //if weatherData is true display the data
                 <>
                     <img src={weatherData.icon} alt="Error" className='weather-icon'></img>
                     <p className='temperature'>{weatherData.temperature}°C</p>
@@ -103,9 +107,10 @@ const Weather=()=>{
                                 <span>Wind Speed</span>
                             </div>
                         </div>
-                    </div>
+                    </div><br></br>
+                    <button className="refresh-btn" onClick={() => search(inputRef.current.value)}>Refresh</button> 
                 </>
-            ):(
+            ):( //when weatherData is false
                 <span className='error'>Please enter a correct location</span>
             )}
         </div>
