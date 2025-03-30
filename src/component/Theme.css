@@ -1,7 +1,7 @@
-:root{
-    --tcolor:black;
+:root{ /*default color*/
+    --tcolor:black; 
   }
-  .dark-theme{
+  .dark-theme{ /* style when theme is dark*/
     --tcolor:white;
   }
 
