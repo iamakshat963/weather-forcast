@@ -1,22 +1,22 @@
-:root{
+:root{ /*default theme*/
     --bg-color1: #a50404;
     --bg-color2: #e40a0a;
     --text-color:white;
   }
-.dark-theme{
+.dark-theme{ /*dark theme*/
     --bg-color1: #660284;
     --bg-color2: #c70ae4;
     --text-color:white;
 }
 
 body{
-    transition: background 0.5s ease ,color 0.5s ease;
+    transition: background 0.5s ease ,color 0.5s ease; /*transition on changing theme*/
 }
 .weather{
     place-self: center;
     padding: 40px;
     border-radius: 10px;
-    background-image: linear-gradient(45deg,var(--bg-color1), var(--bg-color2));
+    background-image: linear-gradient(45deg,var(--bg-color1), var(--bg-color2)); /*smooth transition between two colors at a 45-degree angle*/
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -93,4 +93,11 @@ body{
     height: 50px;
     margin: 20px;
     display: block;
+}
+
+.refresh-btn{
+    padding: 5px 8px;
+    border:none;
+    font-size: 15px;
+    border-radius: 7px;
 }
